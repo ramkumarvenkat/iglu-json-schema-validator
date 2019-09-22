@@ -1,3 +1,3 @@
-POST    /schema/:SCHEMAID       controllers.SchemaApiController.create(SCHEMAID)
-GET     /schema/:SCHEMAID       controllers.SchemaApiController.read(SCHEMAID)
-POST    /validate/:SCHEMAID     controllers.SchemaApiController.validate(SCHEMAID)
+POST    /schema/:SCHEMAID       controllers.SchemaApiController.uploadSchema(SCHEMAID)
+GET     /schema/:SCHEMAID       controllers.SchemaApiController.readSchema(SCHEMAID)
+POST    /validate/:SCHEMAID     controllers.SchemaApiController.validateDocument(SCHEMAID)

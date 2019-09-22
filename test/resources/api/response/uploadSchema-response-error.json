@@ -1,0 +1,6 @@
+{
+  "action": "uploadSchema",
+  "id": "config-schema",
+  "status": "error",
+  "message": "Invalid Json"
+}

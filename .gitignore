@@ -1,10 +1,22 @@
 *.class
 *.log
 
-/target
+# SBT
+dist
+project/boot
+project/target/
+project/project/target/
+test/target/
+target/
+.target
+
+# Play
+logs/
+RUNNING_PID
+
+# Idea
 /.idea
 /.idea_modules
 /.classpath
 /.project
 /.settings
-/RUNNING_PID
