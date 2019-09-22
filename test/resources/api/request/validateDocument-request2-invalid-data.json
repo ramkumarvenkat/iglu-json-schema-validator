@@ -1,0 +1,31 @@
+{
+  "person": {
+    "name": "Elizabeth",
+    "nicknames": ["Queen"],
+    "children": [
+      {
+        "name": "Charles",
+        "nicknames": ["Prince"],
+        "children": [
+          {
+            "name": "William",
+            "nicknames": ["GrandSon"],
+            "children": [
+              {
+                "name": "George"
+              },
+              {
+                "name": "Charlotte",
+                "nicknames": ["Niece"]
+              }
+            ]
+          },
+          {
+            "name": "Harry",
+            "nicknames": ["King"]
+          }
+        ]
+      }
+    ]
+  }
+}

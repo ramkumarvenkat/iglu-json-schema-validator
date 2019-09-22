@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+
+  "definitions": {
+    "person": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "nicknames": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "children": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/person" },
+          "default": []
+        }
+      },
+      "required": [
+        "nicknames"
+      ]
+    }
+  },
+
+  "type": "object",
+
+  "properties": {
+    "person": { "$ref": "#/definitions/person" }
+  }
+}

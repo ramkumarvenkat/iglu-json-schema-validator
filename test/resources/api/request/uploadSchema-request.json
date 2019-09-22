@@ -23,8 +23,13 @@
           "type": "integer"
         }
       },
-      "required": ["size"]
+      "required": [
+        "size"
+      ]
     }
   },
-  "required": ["source", "destination"]
+  "required": [
+    "source",
+    "destination"
+  ]
 }

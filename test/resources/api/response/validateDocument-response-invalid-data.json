@@ -1,0 +1,6 @@
+{
+  "action": "validateDocument",
+  "id": "config-schema",
+  "status": "error",
+  "message": "Error[required] in[] reason[object has missing required properties ([\"destination\"])]"
+}

@@ -1,4 +1,4 @@
-package core
+package core.store
 
 import java.util.concurrent.ConcurrentHashMap
 

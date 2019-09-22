@@ -2,8 +2,8 @@ import javax.inject.{Inject, Provider, Singleton}
 import models.ApiModels.Response
 import play.api.http.DefaultHttpErrorHandler
 import play.api.http.Status._
-import play.api.mvc.Results._
 import play.api.libs.json.Json
+import play.api.mvc.Results._
 import play.api.mvc._
 import play.api.routing.Router
 import play.api.{Configuration, Environment, OptionalSourceMapper}
@@ -12,7 +12,7 @@ import play.core.SourceMapper
 import scala.concurrent._
 
 @Singleton
-class ErrorHandler (environment: Environment,
+class ErrorHandler(environment: Environment,
                    configuration: Configuration,
                    sourceMapper: Option[SourceMapper] = None,
                    optionRouter: => Option[Router] = None) extends DefaultHttpErrorHandler(environment, configuration, sourceMapper, optionRouter) {

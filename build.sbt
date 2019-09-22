@@ -7,6 +7,8 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       guice,
       "com.snowplowanalytics" %% "iglu-core" % "0.5.1",
-      "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.3" % Test
+      "com.github.java-json-tools" % "json-schema-validator" % "2.2.11",
+      "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.3" % Test,
+      specs2 % Test
     ),
   )
