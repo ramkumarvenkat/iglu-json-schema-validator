@@ -1,18 +1,23 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-
   "definitions": {
     "person": {
       "type": "object",
       "properties": {
-        "name": { "type": "string" },
+        "name": {
+          "type": "string"
+        },
         "nicknames": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "children": {
           "type": "array",
-          "items": { "$ref": "#/definitions/person" },
+          "items": {
+            "$ref": "#/definitions/person"
+          },
           "default": []
         }
       },
@@ -21,10 +26,10 @@
       ]
     }
   },
-
   "type": "object",
-
   "properties": {
-    "person": { "$ref": "#/definitions/person" }
+    "person": {
+      "$ref": "#/definitions/person"
+    }
   }
 }

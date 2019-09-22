@@ -11,14 +11,34 @@ import play.api.mvc._
 class SchemaApiController @Inject()(cc: ControllerComponents, schemaStore: SchemaStore[JsValue], validator: SchemaValidator[JsValue, JsValue]) extends AbstractController(cc) {
 
   def uploadSchema(schemaId: String) = Action(parse.json) { request =>
-    val schema = SelfDescribingSchema[JsValue](
-      SchemaMap(SchemaKey("com.iglu.sample", schemaId, "jsonschema", SchemaVer.Full(1, 0, 0))),
-      request.body
-    )
-    schemaStore.upload(schemaId, schema)
+    schemaStore.read(schemaId) match {
+      case Some(schema) =>
+        upsert(schemaId, request.body, schema)
+      case _ =>
+        insert(schemaId, request.body)
+    }
+
     Created(Json.toJson(
       Response("uploadSchema", schemaId, "success")
     ))
+  }
+
+  private def upsert(schemaId: String, schema: JsValue, existingSchema: SelfDescribingSchema[JsValue]) = {
+    val version = existingSchema.self.schemaKey.version
+    val newRevision = version.revision + 1
+    storeSchema(schemaId, schema, version.copy(revision = newRevision))
+  }
+
+  private def storeSchema(schemaId: String, schema: JsValue, version: SchemaVer.Full) = {
+    val selfDescribingSchema = SelfDescribingSchema[JsValue](
+      SchemaMap(SchemaKey("com.iglu.sample", schemaId, "jsonschema", version)),
+      schema
+    )
+    schemaStore.upload(schemaId, selfDescribingSchema)
+  }
+
+  private def insert(schemaId: String, schema: JsValue) = {
+    storeSchema(schemaId, schema, SchemaVer.Full(1, 1, 0))
   }
 
   def readSchema(schemaId: String) = Action {

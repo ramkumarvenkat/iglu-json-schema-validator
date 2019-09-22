@@ -5,25 +5,35 @@
     "children": [
       {
         "name": "Charles",
-        "nicknames": ["Prince"],
+        "nicknames": [
+          "Prince"
+        ],
         "children": [
           {
             "name": "William",
-            "nicknames": ["GrandSon"],
+            "nicknames": [
+              "GrandSon"
+            ],
             "children": [
               {
                 "name": "George",
-                "nicknames": ["Cousin"]
+                "nicknames": [
+                  "Cousin"
+                ]
               },
               {
                 "name": "Charlotte",
-                "nicknames": ["Niece"]
+                "nicknames": [
+                  "Niece"
+                ]
               }
             ]
           },
           {
             "name": "Harry",
-            "nicknames": ["King"]
+            "nicknames": [
+              "King"
+            ]
           }
         ]
       }

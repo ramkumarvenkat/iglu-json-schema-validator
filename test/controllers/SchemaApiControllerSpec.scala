@@ -23,6 +23,31 @@ class SchemaApiControllerSpec extends PlaySpec with BaseSpec with GuiceOneAppPer
       contentAsJson(schema) mustBe response
     }
 
+    "return 201 when the schema is already uploaded and the new schema is overwritten" in {
+      val testCase = getAsJson("/api/request/uploadSchema-request.json")
+      val response = getAsJson("/api/response/uploadSchema-response.json")
+      val request = FakeRequest(POST, "/schema/config-schema")
+        .withHeaders(CONTENT_TYPE -> "application/json")
+        .withJsonBody(testCase)
+
+      val schema = route(app, request).get
+
+      status(schema) mustBe CREATED
+      contentType(schema) mustBe Some("application/json")
+      contentAsJson(schema) mustBe response
+
+      val testCase2 = getAsJson("/api/request/uploadSchema-request2.json")
+      val request2 = FakeRequest(POST, "/schema/config-schema")
+        .withHeaders(CONTENT_TYPE -> "application/json")
+        .withJsonBody(testCase2)
+
+      val schema2 = route(app, request2).get
+
+      status(schema2) mustBe CREATED
+      contentType(schema2) mustBe Some("application/json")
+      contentAsJson(schema2) mustBe response
+    }
+
     "return 400 when the request body is NOT a valid json" in {
       val testCase = getAsText("/api/request/uploadSchema-request-error.json")
       val response = getAsJson("/api/response/uploadSchema-response-error.json")
