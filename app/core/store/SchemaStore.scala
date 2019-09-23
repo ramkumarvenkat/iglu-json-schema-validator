@@ -1,11 +1,11 @@
 package core.store
 
 import com.google.inject.ImplementedBy
-import com.snowplowanalytics.iglu.core.SelfDescribingSchema
 
-@ImplementedBy(classOf[MemorySchemaStore])
+import scala.util.Try
+
+@ImplementedBy(classOf[IgluSchemaStore])
 trait SchemaStore[T] {
-  def upload(schemaId: String, schema: SelfDescribingSchema[T]): SelfDescribingSchema[T]
-
-  def read(schemaId: String): Option[SelfDescribingSchema[T]]
+  def upload(schemaId: String, schema: T): Try[T]
+  def read(schemaId: String): Try[T]
 }

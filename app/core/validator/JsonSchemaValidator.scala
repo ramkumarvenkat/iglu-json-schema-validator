@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.SchemaVersion
 import com.github.fge.jsonschema.cfg.ValidationConfiguration
+import com.github.fge.jsonschema.core.report.{ListReportProvider, LogLevel}
 import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
 import javax.inject.Singleton
 import play.api.libs.json.{JsObject, JsString, JsValue, Json}
@@ -48,12 +49,15 @@ class JsonSchemaValidator extends SchemaValidator[JsValue, JsValue] {
   }
 
   private def getJsonSchemaValidator(version: SchemaVersion): JsonValidator = {
+    // Log only errors to prevent exceptions like `self not present in schema`
+    val reportProvider = new ListReportProvider(LogLevel.ERROR, LogLevel.NONE)
     val config = ValidationConfiguration
       .newBuilder
       .setDefaultVersion(version)
       .freeze
     val factory = JsonSchemaFactory
       .newBuilder
+        .setReportProvider(reportProvider)
       .setValidationConfiguration(config)
       .freeze
     factory.getValidator

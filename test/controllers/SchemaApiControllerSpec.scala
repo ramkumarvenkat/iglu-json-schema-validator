@@ -36,6 +36,7 @@ class SchemaApiControllerSpec extends PlaySpec with BaseSpec with GuiceOneAppPer
       contentType(schema) mustBe Some("application/json")
       contentAsJson(schema) mustBe response
 
+      // Overwrite config-schema with family-schema
       val testCase2 = getAsJson("/api/request/uploadSchema-request2.json")
       val request2 = FakeRequest(POST, "/schema/config-schema")
         .withHeaders(CONTENT_TYPE -> "application/json")
@@ -46,6 +47,13 @@ class SchemaApiControllerSpec extends PlaySpec with BaseSpec with GuiceOneAppPer
       status(schema2) mustBe CREATED
       contentType(schema2) mustBe Some("application/json")
       contentAsJson(schema2) mustBe response
+
+      // Revert back again, since the tests are stateful
+      val schema3 = route(app, request).get
+
+      status(schema3) mustBe CREATED
+      contentType(schema3) mustBe Some("application/json")
+      contentAsJson(schema3) mustBe response
     }
 
     "return 400 when the request body is NOT a valid json" in {
@@ -67,6 +75,7 @@ class SchemaApiControllerSpec extends PlaySpec with BaseSpec with GuiceOneAppPer
     "return 200 when reading an uploaded schema" in {
       // Upload schema
       val inputSchema = getAsJson("/api/request/uploadSchema-request.json")
+      val igluSchema = getAsJson("/iglu/config-schema-response.json")
       val uploadRequest = FakeRequest(POST, "/schema/config-schema")
         .withHeaders(CONTENT_TYPE -> "application/json")
         .withJsonBody(inputSchema)
@@ -78,7 +87,7 @@ class SchemaApiControllerSpec extends PlaySpec with BaseSpec with GuiceOneAppPer
 
       status(responseSchema) mustBe OK
       contentType(responseSchema) mustBe Some("application/json")
-      contentAsJson(responseSchema) mustBe inputSchema
+      contentAsJson(responseSchema) mustBe igluSchema
     }
 
     "return 404 when reading a schema, which is not uploaded" in {
