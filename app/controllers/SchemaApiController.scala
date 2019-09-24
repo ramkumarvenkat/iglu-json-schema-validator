@@ -1,13 +1,13 @@
 package controllers
 
-import core.store.SchemaStore
+import core.store.{SchemaNotFoundException, SchemaStore}
 import core.validator.SchemaValidator
 import javax.inject.Inject
 import models.ApiModels.Response
 import play.api.libs.json.{JsNull, JsObject, JsValue, Json}
 import play.api.mvc._
 
-import scala.util.Success
+import scala.util.{Failure, Success}
 
 class SchemaApiController @Inject()(cc: ControllerComponents, schemaStore: SchemaStore[JsValue], validator: SchemaValidator[JsValue, JsValue]) extends AbstractController(cc) {
 
@@ -17,7 +17,8 @@ class SchemaApiController @Inject()(cc: ControllerComponents, schemaStore: Schem
         Created(Json.toJson(
           Response("uploadSchema", schemaId, "success")
         ))
-      case _ => InternalServerError
+      case _ =>
+        InternalServerError
     }
   }
 
@@ -25,8 +26,10 @@ class SchemaApiController @Inject()(cc: ControllerComponents, schemaStore: Schem
     schemaStore.read(schemaId) match {
       case Success(schema) =>
         Ok(schema)
-      case _ =>
+      case Failure(_: SchemaNotFoundException) =>
         NotFound
+      case _ =>
+        InternalServerError
     }
   }
 
@@ -34,8 +37,10 @@ class SchemaApiController @Inject()(cc: ControllerComponents, schemaStore: Schem
     schemaStore.read(schemaId) match {
       case Success(schema) =>
         validate(schemaId, request.body, schema)
-      case _ =>
+      case Failure(_: SchemaNotFoundException) =>
         NotFound
+      case _ =>
+        InternalServerError
     }
   }
 

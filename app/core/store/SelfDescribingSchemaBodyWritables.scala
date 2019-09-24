@@ -8,9 +8,8 @@ import play.api.libs.ws.{BodyWritable, InMemoryBody}
 
 trait SelfDescribingSchemaBodyWritables {
 
-  /**
-   * Creates an InMemoryBody with "application/json" content type, using the static ObjectMapper.
-   */
+  // Copied and modified from play.api.libs.ws.JsonBodyWritables
+
   implicit val implicitSchemaKeyWrites = new Writes[SchemaKey] {
     def writes(k: SchemaKey): JsValue = {
       Json.obj("vendor" -> k.vendor, "name" -> k.name, "format" -> k.format, "version" -> k.version.asString)

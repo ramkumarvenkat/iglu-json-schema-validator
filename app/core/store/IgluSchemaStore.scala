@@ -31,9 +31,13 @@ class IgluSchemaStore @Inject()(config: Configuration, ws: WSClient) extends Sch
     val response: Future[Try[JsValue]] = request.put(selfDescribingSchema).map {
       case response if response.status == 200 || response.status == 201 =>
         Success(Json.toJson(response.body))
-      case response =>
+      case response => // Returns a failure for both 4XX and 5XX
         Failure(new RuntimeException("Iglu server returned error during upload: " + response.body))
+    } recover {
+      case _ => Failure(new RuntimeException("Iglu server returned error during upload"))
     }
+
+    // Bad: This is a blocking call
     val res = Await.result(response, 5000 millis)
     res
   }
@@ -45,8 +49,12 @@ class IgluSchemaStore @Inject()(config: Configuration, ws: WSClient) extends Sch
     val response: Future[Try[JsValue]] = request.get().map {
       case response if response.status == 200 || response.status == 201 =>
         Success(Json.parse(response.body))
-      case response =>
+      case response if response.status == 404 =>
+        Failure(new SchemaNotFoundException("Iglu server returned error during get: " + response.body))
+      case response => // Returns a failure for both 4XX (except 404) and 5XX
         Failure(new RuntimeException("Iglu server returned error during get: " + response.body))
+    } recover {
+      case _ => Failure(new RuntimeException("Iglu server returned error during get"))
     }
 
     Await.result(response, 5000 millis)
